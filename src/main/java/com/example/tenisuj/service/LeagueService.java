@@ -1,0 +1,18 @@
+package com.example.tenisuj.service;
+
+import com.example.tenisuj.model.League;
+
+import java.util.List;
+
+public interface LeagueService {
+    void addLeague(String leagueId, String leagueName);
+
+    List<League> getAllLeagues();
+
+    League getLeague(String leagueId);
+
+    void deleteLeague(String leagueId);
+
+    League addPlayerToLeague(String leagueId, String playerId);
+
+}

@@ -16,8 +16,11 @@ public interface PlayerService {
                      String hand,
                      int rating,
                      LocalDate registrationDate);
+
     List<Player> getAllPlayers();
+
     Player getPlayerById(@NonNull String id);
+
     void deletePlayer(@NonNull String id);
 
 }
