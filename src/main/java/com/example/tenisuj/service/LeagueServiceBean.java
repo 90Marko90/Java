@@ -62,7 +62,9 @@ public class LeagueServiceBean implements LeagueService {
         var player = playerRepository.findById(playerId)
                 .orElseThrow(() -> new IllegalArgumentException("Player not found"));
         league.getPlayers().add(player);
+        player.setLeagueStatus(true);
         log.info("Adding player to league {}", league);
+        playerRepository.save(player);
         leagueRepository.save(league);
         return league;
     }
