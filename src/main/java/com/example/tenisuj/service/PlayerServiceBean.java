@@ -24,7 +24,7 @@ public class PlayerServiceBean implements PlayerService {
 
     @Override
     public Player addPlayer(@NonNull String firstName, @NonNull String lastName, String email, String gender, LocalDate birthday, Boolean leagueStatus, String hand, int rating, LocalDate registrationDate) {
-        
+
         registrationDate = LocalDate.now();
 
         if (gender.equalsIgnoreCase("M")) {
@@ -34,11 +34,11 @@ public class PlayerServiceBean implements PlayerService {
         } else {
             gender = "Unknown";
         }
-        if (hand.equalsIgnoreCase("L")){
+        if (hand.equalsIgnoreCase("L")) {
             hand = "Left";
-        }else if (hand.equalsIgnoreCase("R")){
+        } else if (hand.equalsIgnoreCase("R")) {
             hand = "Right";
-        }else {
+        } else {
             hand = "Unknown";
         }
         var player = new Player(UUID.randomUUID().toString(), firstName, lastName, email, gender, birthday, leagueStatus, hand, rating, registrationDate);
