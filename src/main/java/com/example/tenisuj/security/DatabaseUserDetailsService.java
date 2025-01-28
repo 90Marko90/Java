@@ -19,6 +19,4 @@ public class DatabaseUserDetailsService implements UserDetailsService {
                 .map(UserDetailsAdapter::new)
                 .orElse(null);
     }
-
-
 }

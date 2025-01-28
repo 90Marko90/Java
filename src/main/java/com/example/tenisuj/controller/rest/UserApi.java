@@ -56,7 +56,7 @@ public class UserApi {
 
     @PatchMapping("/{id}")
     ResponseEntity<String> updateUser(@PathVariable("id") String id, @RequestBody UpdateUser user) {
-        userService.updateUser(id, user.password());
+        userService.updateUser(id, user.password(), user.playerId());
         return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
     }
 

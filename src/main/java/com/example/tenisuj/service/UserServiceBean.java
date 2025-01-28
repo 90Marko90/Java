@@ -2,6 +2,7 @@ package com.example.tenisuj.service;
 
 import com.example.tenisuj.model.User;
 import com.example.tenisuj.model.enums.Role;
+import com.example.tenisuj.repository.PlayerRepository;
 import com.example.tenisuj.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import java.util.List;
 public class UserServiceBean implements UserService {
 
     private final UserRepository userRepository;
+    private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceBean(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceBean(UserRepository userRepository, PlayerRepository playerRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.playerRepository = playerRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -33,7 +36,7 @@ public class UserServiceBean implements UserService {
         if (!StringUtils.hasText(password)) {
             throw new IllegalArgumentException("Password is empty");
         }
-        var User = new User(username, encryptPassword(password), Role.USER.getRole());
+        var User = new User(username, Role.USER.getRole(), passwordEncoder.encode(password));
 
         if (userRepository.existsById(username)) {
             throw new IllegalArgumentException("User already exists");
@@ -64,7 +67,7 @@ public class UserServiceBean implements UserService {
     }
 
     @Override
-    public void updateUser(String username, String password) {
+    public void updateUser(String username, String password, String playerId) {
         var user = userRepository
                 .findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -73,15 +76,17 @@ public class UserServiceBean implements UserService {
 
         updated.setUsername(username);
 
-        if (StringUtils.hasText(username)) {
-            updated.setUsername(username);
-        } else {
-            updated.setUsername(user.getUsername());
-        }
         if (StringUtils.hasText(password)) {
             updated.setPassword(encryptPassword(password));
         } else {
             updated.setPassword(user.getPassword());
+        }
+
+        if (StringUtils.hasText(playerId)) {
+            updated.setPlayer(playerRepository.findById(playerId)
+                    .orElseThrow(() -> new UsernameNotFoundException("Player not found")));
+        } else {
+            updated.setPlayer(user.getPlayer());
         }
         updated.setRole(user.getRole());
         userRepository.save(updated);

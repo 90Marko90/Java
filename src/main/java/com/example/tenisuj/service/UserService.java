@@ -13,7 +13,8 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void updateUser(String username, String password);
+    void updateUser(String username, String password, String playerId);
 
     List<User> getUsersByName(String name);
+
 }

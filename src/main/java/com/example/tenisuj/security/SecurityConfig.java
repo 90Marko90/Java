@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .securityMatcher("/rest/**")
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+                                .requestMatchers("/rest/players/**").permitAll()
                                 .requestMatchers("/rest/users/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
