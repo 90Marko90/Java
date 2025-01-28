@@ -1,16 +1,19 @@
 package com.example.tenisuj.model.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
+
     ADMIN("ADMIN"),
-    PLAYER("player"),;
+    USER("USER"),
+    PLAYER("PLAYER");
+
     private final String role;
 
     Role(String role) {
         this.role = role;
     }
 
-    public String getRole() {
-        return role;
-    }
 }
 

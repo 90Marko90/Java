@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -15,45 +16,81 @@ import java.util.List;
 @Slf4j
 public class UserServiceBean implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final String USER_ROLE = "USER";
 
     @Autowired
-    public UserServiceBean(PasswordEncoder passwordEncoder) {
+    public UserServiceBean(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User addUser(String username, String password) {
-        return null;
+    public void addUser(String username, String password) {
+        if (!StringUtils.hasText(username)) {
+            throw new IllegalArgumentException("Username is empty");
+        }
+        if (!StringUtils.hasText(password)) {
+            throw new IllegalArgumentException("Password is empty");
+        }
+        var User = new User(username, encryptPassword(password), Role.USER.getRole());
+
+        if (userRepository.existsById(username)) {
+            throw new IllegalArgumentException("User already exists");
+        }
+        userRepository.save(User);
+        log.info("User created: {}", username);
     }
 
     @Override
     public void deleteUser(String username) {
+        if (!userRepository.existsById(username)) {
+            throw new IllegalArgumentException("User does not exist");
+        }
+        userRepository.deleteById(username);
+        log.info("User deleted: {}", username);
+    }
 
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll().stream().toList();
     }
 
     @Override
     public User getUser(String username) {
         return userRepository
                 .findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return List.of();
-    }
+    public void updateUser(String username, String password) {
+        var user = userRepository
+                .findById(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-    @Override
-    public User updateUser(String username, String password) {
-        return null;
+        var updated = new User();
+
+        updated.setUsername(username);
+
+        if (StringUtils.hasText(username)) {
+            updated.setUsername(username);
+        } else {
+            updated.setUsername(user.getUsername());
+        }
+        if (StringUtils.hasText(password)) {
+            updated.setPassword(encryptPassword(password));
+        } else {
+            updated.setPassword(user.getPassword());
+        }
+        updated.setRole(user.getRole());
+        userRepository.save(updated);
+        log.info("User updated: {}", updated.getUsername());
     }
 
     @Override
     public List<User> getUsersByName(String name) {
-        return List.of();
+        return userRepository.findByUsernameContainingIgnoreCase(name);
     }
 
     private String encryptPassword(String password) {

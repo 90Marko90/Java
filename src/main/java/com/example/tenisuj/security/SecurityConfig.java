@@ -19,6 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 
 public class SecurityConfig {
+
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
 
@@ -27,28 +28,29 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
     }
-//    @Bean
-//    public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .securityMatcher("/rest/**")
-//                .authorizeHttpRequests(authorizeRequests ->
-//                        authorizeRequests
-//                                .requestMatchers("/rest/info").permitAll()
-//                                .requestMatchers("/rest/users/**").hasRole("ADMIN")
-//                                .anyRequest().authenticated()
-//                )
-//                .userDetailsService(userDetailsService)
-//                .httpBasic(withDefaults())
-//                .csrf(AbstractHttpConfigurer::disable);
-//        return http.build();
-//    }
+
+    @Bean
+    public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/rest/**")
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/rest/users/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .userDetailsService(userDetailsService)
+                .httpBasic(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public CommandLineRunner initDatabase () {
+    public CommandLineRunner initDatabase() {
         return args -> {
             String username = "admin";
             if (!userRepository.existsById(username)) {
