@@ -41,6 +41,7 @@ public class PlayerServiceBean implements PlayerService {
         } else {
             hand = "Unknown";
         }
+
         var player = new Player(UUID.randomUUID().toString(), firstName, lastName, email, gender, birthday, leagueStatus, hand, rating, registrationDate);
         log.info("Adding player: {}", player);
         return playerRepository.save(player);
