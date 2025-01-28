@@ -55,7 +55,7 @@ public class SecurityConfig {
         return args -> {
             String username = "admin";
             if (!userRepository.existsById(username)) {
-                User user = new User(username, passwordEncoder().encode("admin"), Role.ADMIN.getRole());
+                User user = new User(username,Role.ADMIN.getRole(), passwordEncoder().encode("admin"));
                 userRepository.save(user);
             }
         };
