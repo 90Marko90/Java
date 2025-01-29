@@ -37,6 +37,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/rest/players/**").permitAll()
                                 .requestMatchers("/rest/users/**").hasRole("ADMIN")
+//                                .requestMatchers("/rest/users/**").hasRole("ROLE_USER")
                                 .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
