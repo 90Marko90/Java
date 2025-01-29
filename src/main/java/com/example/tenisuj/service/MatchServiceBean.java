@@ -1,9 +1,7 @@
 package com.example.tenisuj.service;
 
-import com.example.tenisuj.model.League;
 import com.example.tenisuj.model.Match;
 import com.example.tenisuj.model.Player;
-import com.example.tenisuj.model.User;
 import com.example.tenisuj.repository.MatchRepository;
 import com.example.tenisuj.repository.PlayerRepository;
 import lombok.NonNull;
@@ -11,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,14 +28,14 @@ public class MatchServiceBean implements MatchService {
     }
 
     @Override
-    public Match addMatch(String player1Id,String player2Id) {
+    public Match addMatch(String player1Id, String player2Id) {
 
         Player player1 = playerRepository.findById(player1Id)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
         Player player2 = playerRepository.findById(player2Id)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
 
-        Match match = new Match(UUID.randomUUID().toString(),player1,player2,null,null,null,null,null,null,null,null,null,null,null);
+        Match match = new Match(UUID.randomUUID().toString(), player1, player2, null, null, null, null, null, null, null, null, null, null, null, null);
 
         matchRepository.save(match);
         log.info("Match added");
@@ -66,8 +63,9 @@ public class MatchServiceBean implements MatchService {
         log.info("Match deleted");
     }
 
+
     @Override
-    public void addResult(String matchId,
+    public Match addResult(String matchId,
                            Integer player1_set1,
                            Integer player2_set1,
                            Integer player1_set2,
@@ -78,20 +76,78 @@ public class MatchServiceBean implements MatchService {
                            Integer player2_set4,
                            Integer player1_set5,
                            Integer player2_set5,
-                           String playerId) {
+                           String scratchedPlayerId,
+                           String winnerPlayerId) {
 
         var match = matchRepository
                 .findById(matchId)
                 .orElseThrow(() -> new UsernameNotFoundException("Match not found"));
 
-        Player scratchnigPlayer = playerRepository.findById(playerId)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
-        // need to add validation if scratchingPlayer is Player1 or Player2
+        // Validate set results
+        Integer[] player1Points = {player1_set1, player1_set2, player1_set3, player1_set4, player1_set5};
+        Integer[] player2Points = {player2_set1, player2_set2, player2_set3, player2_set4, player2_set5};
 
-        Match updated = new Match(matchId,matchRepository.findById(matchId).get().getPlayer1(),matchRepository.findById(matchId).get().getPlayer1(),player1_set1,player2_set1,player1_set2, player2_set2, player1_set3, player2_set3, player1_set4, player2_set4, player1_set5, player2_set5, scratchnigPlayer);
+        for (int i = 0; i < player1Points.length; i++) {
+            if ((player1Points[i] != null && player2Points[i] == null) || (player1Points[i] == null && player2Points[i] != null)) {
+                throw new RuntimeException("Both players' points must be provided for each set");
+            }
+            if (i > 0 && (player1Points[i] != null || player2Points[i] != null) && (player1Points[i - 1] == null || player2Points[i - 1] == null)) {
+                throw new RuntimeException("Earlier set results must be provided if later set results are provided");
+            }
+        }
 
-        matchRepository.save(updated);
-        log.info("Match result updated: {}", updated.getId());
+        Player scratched = null;
 
+        if (scratchedPlayerId != null) {
+            if (match.getPlayer1().getId().equals(scratchedPlayerId) || match.getPlayer2().getId().equals(scratchedPlayerId)) {
+                scratched = playerRepository.findById(scratchedPlayerId)
+                        .orElseThrow(() -> new RuntimeException("Player not found"));
+                match.setScratched(scratched);
+            } else {
+                throw new RuntimeException("Player not participating in match");
+            }
+        }
+
+        Player winner = null;
+
+        if (scratched != null) {
+            // Determine winner based on scratching player
+            if (scratched.getId().equals(match.getPlayer1().getId())) {
+                match.setWinner(match.getPlayer2());
+            } else if (scratched.getId().equals(match.getPlayer2().getId())) {
+                match.setWinner(match.getPlayer1());
+            }
+            // Determine winner based on points in the last set with points
+            int lastSetIndex = -1;
+            for (int i = player1Points.length - 1; i >= 0; i--) {
+                if (player1Points[i] != null && player2Points[i] != null) {
+                    lastSetIndex = i;
+                    break;
+                }
+            }
+            if (lastSetIndex == -1) {
+                throw new RuntimeException("No valid sets found to determine the winner");
+            }
+            if (player1Points[lastSetIndex] > player2Points[lastSetIndex]) {
+                match.setWinner(match.getPlayer1());
+            } else {
+                match.setWinner(match.getPlayer2());
+            }
+        }
+
+        match.setPlayer1_set1(player1_set1);
+        match.setPlayer2_set1(player2_set1);
+        match.setPlayer1_set2(player1_set2);
+        match.setPlayer2_set2(player2_set2);
+        match.setPlayer1_set3(player1_set3);
+        match.setPlayer2_set3(player2_set3);
+        match.setPlayer1_set4(player1_set4);
+        match.setPlayer2_set4(player2_set4);
+        match.setPlayer1_set5(player1_set5);
+        match.setPlayer2_set5(player2_set5);
+
+        matchRepository.save(match);
+        log.info("Match result updated: {}", match.getId());
+        return match;
     }
 }
