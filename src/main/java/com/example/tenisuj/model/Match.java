@@ -15,10 +15,10 @@ public class Match {
     @Id
     private String id;
 
-    @OneToMany
+    @ManyToOne
     private Player player1;
 
-    @OneToMany
+    @ManyToOne
     private Player player2;
 
     private Integer player1_set1;
@@ -32,7 +32,7 @@ public class Match {
     private Integer player1_set5;
     private Integer player2_set5;
 
-    @OneToMany
+    @ManyToOne
     private Player scratched;
 
 }
