@@ -92,7 +92,7 @@ public class MatchServiceBean implements MatchService {
                 throw new RuntimeException("Both players' points must be provided for each set");
             }
             if (i > 0 && (player1Points[i] != null || player2Points[i] != null) && (player1Points[i - 1] == null || player2Points[i - 1] == null)) {
-                throw new RuntimeException("Earlier set results must be provided if later set results are provided");
+                throw new RuntimeException("Earlier set results must be provided if later set results are entered");
             }
         }
 
@@ -117,6 +117,9 @@ public class MatchServiceBean implements MatchService {
             } else if (scratched.getId().equals(match.getPlayer2().getId())) {
                 match.setWinner(match.getPlayer1());
             }
+        }
+
+        if (scratched == null) {
             // Determine winner based on points in the last set with points
             int lastSetIndex = -1;
             for (int i = player1Points.length - 1; i >= 0; i--) {
@@ -130,7 +133,7 @@ public class MatchServiceBean implements MatchService {
             }
             if (player1Points[lastSetIndex] > player2Points[lastSetIndex]) {
                 match.setWinner(match.getPlayer1());
-            } else {
+            } else if (player2Points[lastSetIndex] > player1Points[lastSetIndex]) {
                 match.setWinner(match.getPlayer2());
             }
         }
