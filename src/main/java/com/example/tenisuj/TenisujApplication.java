@@ -15,7 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootApplication
@@ -50,30 +52,34 @@ public class TenisujApplication implements CommandLineRunner {
         ));
 
         List<Player> players = new ArrayList<>(List.of(
-                new Player(UUID.randomUUID().toString(), "Marek", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player(UUID.randomUUID().toString(), "Peter", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player(UUID.randomUUID().toString(), "Viktor", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player(UUID.randomUUID().toString(), "David", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player(UUID.randomUUID().toString(), "Oktan", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now())
+                new Player("00000000-0000-0000-0000-000000000000", "Marek", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000001", "Peter", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000002", "Viktor", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000003", "David", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000004", "Oktan", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now())
         ));
 
-//        Match match = new Match(UUID.randomUUID().toString(),players.get(0),players.get(1),7,5,6,4,null,null,null,null,null,null,null,null);
-//        Match match2 = new Match(UUID.randomUUID().toString(),players.get(0),players.get(1),7,5,6,4,null,null,null,null,null,null,null,null);
+        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
+        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
 
-        League league = new League(UUID.randomUUID().toString(),"League",null,null);
+        Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,7,5,6,4,null,null,null,null,null,null,null,null);
+        Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),7,5,6,4,null,null,null,null,null,null,null,null);
+
+        League league = new League("00000000-0000-0000-0000-000000000100","League",players,null);
 
         users.getFirst().setPlayer(players.get(1));
         league.setPlayers(players);
 
         playerRepository.saveAll(players);
-
+        playerRepository.save(player1);
+        playerRepository.save(player2);
 
         for (User user : users) {
             userRepository.save(user);
         }
 
-//        matchRepository.save(match);
-//        matchRepository.save(match2);
+        matchRepository.save(match1);
+        matchRepository.save(match2);
 
         leagueRepository.save(league);
 
