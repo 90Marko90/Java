@@ -43,7 +43,7 @@ public class MatchApi {
     }
     @PatchMapping("/{id}")
     ResponseEntity<Match> updateMatchResult(@PathVariable("id") String id, @RequestBody UpdateResultDto result) {
-        Match matchResult = matchService.addResult(result.getMatchId(), result.getPlayer1_set1(), result.getPlayer2_set1(), result.getPlayer1_set2(), result.getPlayer2_set2(), result.getPlayer1_set3(), result.getPlayer2_set3(), result.getPlayer1_set4(), result.getPlayer2_set4(), result.getPlayer1_set5(), result.getPlayer2_set5(), result.getScratchedPlayerId(), result.getWinnerPlayerId());
+        Match matchResult = matchService.addResult(id, result.getPlayer1_set1(), result.getPlayer2_set1(), result.getPlayer1_set2(), result.getPlayer2_set2(), result.getPlayer1_set3(), result.getPlayer2_set3(), result.getPlayer1_set4(), result.getPlayer2_set4(), result.getPlayer1_set5(), result.getPlayer2_set5(), result.getScratchedPlayerId(), result.getWinnerPlayerId());
         log.info("updateMatchResult");
         return new ResponseEntity<>(matchResult, HttpStatus.OK);
     }
