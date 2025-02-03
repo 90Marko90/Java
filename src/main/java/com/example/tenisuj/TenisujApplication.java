@@ -15,9 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @SpringBootApplication
@@ -52,26 +50,30 @@ public class TenisujApplication implements CommandLineRunner {
         ));
 
         List<Player> players = new ArrayList<>(List.of(
-                new Player(UUID.randomUUID().toString(), "meno", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player(UUID.randomUUID().toString(), "meno", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now())
+                new Player(UUID.randomUUID().toString(), "Marek", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Peter", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Viktor", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "David", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Oktan", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now())
         ));
 
-        Match match = new Match(UUID.randomUUID().toString(),players.get(0),players.get(1),7,5,6,4,null,null,null,null,null,null,null);
-        Match match2 = new Match(UUID.randomUUID().toString(),players.get(0),players.get(1),7,5,6,4,null,null,null,null,null,null,null);
+//        Match match = new Match(UUID.randomUUID().toString(),players.get(0),players.get(1),7,5,6,4,null,null,null,null,null,null,null,null);
+//        Match match2 = new Match(UUID.randomUUID().toString(),players.get(0),players.get(1),7,5,6,4,null,null,null,null,null,null,null,null);
 
-        League league = new League(UUID.randomUUID().toString(),"League",null);
+        League league = new League(UUID.randomUUID().toString(),"League",null,null);
 
         users.getFirst().setPlayer(players.get(1));
         league.setPlayers(players);
 
         playerRepository.saveAll(players);
 
+
         for (User user : users) {
             userRepository.save(user);
         }
 
-        matchRepository.save(match);
-        matchRepository.save(match2);
+//        matchRepository.save(match);
+//        matchRepository.save(match2);
 
         leagueRepository.save(league);
 

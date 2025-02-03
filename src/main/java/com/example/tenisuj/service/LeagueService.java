@@ -1,6 +1,7 @@
 package com.example.tenisuj.service;
 
 import com.example.tenisuj.model.League;
+import com.example.tenisuj.model.Match;
 
 import java.util.List;
 
@@ -14,5 +15,8 @@ public interface LeagueService {
     void deleteLeague(String leagueId);
 
     League addPlayerToLeague(String leagueId, String playerId);
+
+    List<Match> leagueMatchGenerator(String leagueId);
+
 
 }

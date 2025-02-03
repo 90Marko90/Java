@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
 @Entity(name = "leagues")
 @Data
 @AllArgsConstructor
@@ -19,5 +20,6 @@ public class League {
     private String name;
     @OneToMany
     private List<Player> players;
-
+    @OneToMany
+    private List<Match> matches;
 }

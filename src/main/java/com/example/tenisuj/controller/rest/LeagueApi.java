@@ -41,6 +41,13 @@ public class LeagueApi {
         return new ResponseEntity<>("League created", HttpStatus.CREATED);
     }
 
+    @PatchMapping("/add_matches/{id}")
+    ResponseEntity<String> addMatches(@PathVariable("id") String id, League league) {
+        league.setMatches(leagueService.leagueMatchGenerator(id));
+        log.info("addMatches");
+        return new ResponseEntity<>("League matches added", HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteLeague(@PathVariable("id") String id) {
         leagueService.deleteLeague(id);
@@ -54,6 +61,7 @@ public class LeagueApi {
         log.info("addPlayerToLeague {}", id);
         return ResponseEntity.ok(updated);
     }
+
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
