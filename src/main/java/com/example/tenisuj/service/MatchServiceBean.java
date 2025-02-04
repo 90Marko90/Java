@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class MatchServiceBean implements MatchService {
         Player player2 = playerRepository.findById(player2Id)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
 
-        Match match = new Match(UUID.randomUUID().toString(), player1, player2, null, null, null, null, null, null, null, null, null, null, null, null);
+        Match match = new Match(UUID.randomUUID().toString(), player1, player2, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         matchRepository.save(match);
         log.info("Match added");
@@ -63,6 +64,20 @@ public class MatchServiceBean implements MatchService {
         log.info("Match deleted");
     }
 
+    @Override
+    public Match addLocation(String matchId, String location, LocalDateTime dateTime) {
+
+        var match = matchRepository
+                .findById(matchId)
+                .orElseThrow(() -> new UsernameNotFoundException("Match not found"));
+
+        match.setLocation(location);
+        match.setDateTime(dateTime);
+
+        matchRepository.save(match);
+        log.info("Match location, date and time updated: {}", match.getId());
+        return match;
+    }
 
     @Override
     public Match addResult(String matchId,

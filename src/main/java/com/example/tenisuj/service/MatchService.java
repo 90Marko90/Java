@@ -2,6 +2,7 @@ package com.example.tenisuj.service;
 
 import com.example.tenisuj.model.Match;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MatchService {
@@ -9,6 +10,7 @@ public interface MatchService {
     Match getMatch(String matchId);
     List<Match> getMatches();
     void deleteMatch(String matchId);
+    Match addLocation(String matchId, String Location, LocalDateTime dateTime);
     Match addResult(
             String matchId,
             Integer player1_set1,
