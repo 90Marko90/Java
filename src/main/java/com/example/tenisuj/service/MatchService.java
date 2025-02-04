@@ -8,6 +8,8 @@ import java.util.List;
 public interface MatchService {
     Match addMatch(String player1Id, String player2Id);
     Match getMatch(String matchId);
+    List<Match> findAllPlayerMatches(String playerId);
+    List<Match> findWonPlayerMatches(String playerId);
     List<Match> getMatches();
     void deleteMatch(String matchId);
     Match addLocation(String matchId, String Location, LocalDateTime dateTime);

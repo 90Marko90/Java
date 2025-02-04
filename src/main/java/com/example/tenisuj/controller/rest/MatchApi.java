@@ -28,6 +28,17 @@ public class MatchApi {
         log.info("getMatches");
         return matchService.getMatches();
     }
+    @GetMapping("/player_matches/{playerId}")
+    List<Match> getPlayerMatches(@PathVariable("playerId") String playerId) {
+        log.info("getPlayerMatches");
+        return matchService.findAllPlayerMatches(playerId);
+    }
+
+    @GetMapping("/player_win/{playerId}")
+    List<Match> getWonPlayerMatches(@PathVariable("playerId") String playerId) {
+        log.info("getWonPlayerMatches");
+        return matchService.findWonPlayerMatches(playerId);
+    }
 
     @PostMapping("/create")
     ResponseEntity<Match> createMatch(@RequestBody CreateMatchDto match) {
