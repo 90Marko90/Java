@@ -79,9 +79,11 @@ public class LeagueServiceBean implements LeagueService {
     public List<Match> leagueMatchGenerator(String leagueId) {
 
         List<Match> matchList = new ArrayList<>();
-        List<Player> playerList = playerRepository.findAll();
+
         var league = leagueRepository.findById(leagueId)
                 .orElseThrow(() -> new IllegalArgumentException("League not found"));
+
+        List<Player> playerList = league.getPlayers();
 
         for (int i = 0; i < playerList.size(); i++) {
             for (int j = i + 1; j < playerList.size(); j++) {
