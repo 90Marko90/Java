@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
-@Entity(name = "matches")
+@Entity
+@Table(name = "matches")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

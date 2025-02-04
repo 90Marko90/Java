@@ -51,6 +51,16 @@ public class MatchServiceBean implements MatchService {
     }
 
     @Override
+    public List<Match> findAllPlayerMatches(String playerId) {
+        return matchRepository.findAllPlayerMatches(playerId);
+    }
+
+    @Override
+    public List<Match> findWonPlayerMatches(String playerId) {
+        return matchRepository.findWonPlayerMatches(playerId);
+    }
+
+    @Override
     public List<Match> getMatches() {
         return matchRepository.findAll().stream().toList();
     }

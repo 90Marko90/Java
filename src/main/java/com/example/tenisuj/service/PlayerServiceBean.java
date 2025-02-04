@@ -1,6 +1,8 @@
 package com.example.tenisuj.service;
 
+import com.example.tenisuj.model.Match;
 import com.example.tenisuj.model.Player;
+import com.example.tenisuj.repository.MatchRepository;
 import com.example.tenisuj.repository.PlayerRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -68,4 +70,5 @@ public class PlayerServiceBean implements PlayerService {
         log.info("Deleted player: {}", playerRepository.findById(id));
 
     }
+
 }
