@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 
 @Entity(name = "matches")
 @Data
@@ -21,6 +27,11 @@ public class Match {
     @ManyToOne
     private Player player2;
 
+    private String location;
+
+    @DateTimeFormat
+    private LocalDateTime dateTime;
+
     private Integer player1_set1;
     private Integer player2_set1;
     private Integer player1_set2;
@@ -37,5 +48,7 @@ public class Match {
 
     @ManyToOne
     private Player winner;
+
+//    private boolean confirmedResult;
 
 }

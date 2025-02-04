@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -62,8 +63,8 @@ public class TenisujApplication implements CommandLineRunner {
         Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
         Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
 
-        Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,7,5,6,4,null,null,null,null,null,null,null,null);
-        Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),7,5,6,4,null,null,null,null,null,null,null,null);
+        Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,"Stara cesta 5, Bratislava, kurt 10", LocalDateTime.of(2025,1,31,10,30),7,5,6,4,null,null,null,null,null,null,null,players.get(1));
+        Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),null,null,7,5,0,6,3,0,null,null,null,null,players.get(1),players.get(2));
 
         League league = new League("00000000-0000-0000-0000-000000000100","League",players,null);
 

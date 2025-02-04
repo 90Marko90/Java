@@ -2,6 +2,7 @@ package com.example.tenisuj.controller.rest;
 
 import com.example.tenisuj.model.Match;
 import com.example.tenisuj.model.dto.CreateMatchDto;
+import com.example.tenisuj.model.dto.UpdateMatchLocationDateAndTimeDto;
 import com.example.tenisuj.model.dto.UpdateResultDto;
 import com.example.tenisuj.service.MatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,13 @@ public class MatchApi {
         log.info("deleteMatch");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/add_location_date_and_time")
+    ResponseEntity<Match> updateMatchLocationDateAndTime(@PathVariable("id") String id, @RequestBody UpdateMatchLocationDateAndTimeDto locationDateAndTime) {
+        Match matchLocationDateAndTime = matchService.addLocation(id, locationDateAndTime.getLocation(), locationDateAndTime.getDateTime());
+        log.info("updateMatchLocationDateAndTime");
+        return new ResponseEntity<>(matchLocationDateAndTime, HttpStatus.OK);
+    }
+    @PatchMapping("/{id}/add_result")
     ResponseEntity<Match> updateMatchResult(@PathVariable("id") String id, @RequestBody UpdateResultDto result) {
         Match matchResult = matchService.addResult(id, result.getPlayer1_set1(), result.getPlayer2_set1(), result.getPlayer1_set2(), result.getPlayer2_set2(), result.getPlayer1_set3(), result.getPlayer2_set3(), result.getPlayer1_set4(), result.getPlayer2_set4(), result.getPlayer1_set5(), result.getPlayer2_set5(), result.getScratchedPlayerId(), result.getWinnerPlayerId());
         log.info("updateMatchResult");
