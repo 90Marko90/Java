@@ -52,15 +52,15 @@ public class TenisujApplication implements CommandLineRunner {
         ));
 
         List<Player> players = new ArrayList<>(List.of(
-                new Player("00000000-0000-0000-0000-000000000000", "Marek", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000001", "Peter", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000002", "Viktor", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000003", "David", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000004", "Oktan", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now())
+                new Player("00000000-0000-0000-0000-000000000000", "Marek", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000001", "Peter", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000002", "Viktor", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000003", "David", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now()),
+                new Player("00000000-0000-0000-0000-000000000004", "Oktan", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now())
         ));
 
-        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
-        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
+        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
+        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 10, LocalDate.now());
 
         Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,7,5,6,4,null,null,null,null,null,null,null,null);
         Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),7,5,6,4,null,null,null,null,null,null,null,null);
