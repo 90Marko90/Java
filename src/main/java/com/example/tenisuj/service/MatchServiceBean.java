@@ -20,12 +20,14 @@ public class MatchServiceBean implements MatchService {
 
     private final MatchRepository matchRepository;
     private final PlayerRepository playerRepository;
+    private final PlayerService playerService;
 
     @Autowired
-    public MatchServiceBean(MatchRepository matchRepository, PlayerRepository playerRepository) {
+    public MatchServiceBean(MatchRepository matchRepository, PlayerRepository playerRepository, PlayerService playerService) {
 
         this.matchRepository = matchRepository;
         this.playerRepository = playerRepository;
+        this.playerService = playerService;
     }
 
     @Override
@@ -133,8 +135,6 @@ public class MatchServiceBean implements MatchService {
             }
         }
 
-        Player winner = null;
-
         if (scratched != null) {
             // Determine winner based on scratching player
             if (scratched.getId().equals(match.getPlayer1().getId())) {
@@ -175,6 +175,10 @@ public class MatchServiceBean implements MatchService {
         match.setPlayer2_set5(player2_set5);
 
         matchRepository.save(match);
+
+        playerService.updateRating(match.getPlayer1().getId());
+        playerService.updateRating(match.getPlayer2().getId());
+
         log.info("Match result updated: {}", match.getId());
         return match;
     }

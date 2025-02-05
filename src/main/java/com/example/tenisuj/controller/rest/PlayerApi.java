@@ -49,6 +49,12 @@ public class PlayerApi {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PatchMapping("/{id}")
+    ResponseEntity<String> updatePlayerRating(@PathVariable("id") String id, @RequestBody Player player) {
+        player.setRating(playerService.updateRating(id));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<String> handleDateTimeParseException(DateTimeParseException e) {
         log.error("handleDateTimeParseException: {}", e.getMessage());

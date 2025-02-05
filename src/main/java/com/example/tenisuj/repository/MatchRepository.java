@@ -16,4 +16,7 @@ public interface MatchRepository extends JpaRepository<Match, String> {
 
     @Query("select m from Match m where m.winner.id= :playerId")
     List<Match> findWonPlayerMatches(String playerId);
+
+    @Query("select m from Match m where (m.player1.id= :playerId or m.player2.id= :playerId) and m.winner.id is not null")
+    List<Match> findAllPlayedPlayerMatches(String playerId);
 }
