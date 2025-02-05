@@ -1,6 +1,5 @@
 package com.example.tenisuj.service;
 
-import com.example.tenisuj.model.Match;
 import com.example.tenisuj.model.Player;
 import com.example.tenisuj.repository.MatchRepository;
 import com.example.tenisuj.repository.PlayerRepository;
@@ -18,10 +17,12 @@ import java.util.UUID;
 public class PlayerServiceBean implements PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final MatchRepository matchRepository;
 
     @Autowired
-    public PlayerServiceBean(PlayerRepository playerRepository) {
+    public PlayerServiceBean(PlayerRepository playerRepository, MatchRepository matchRepository) {
         this.playerRepository = playerRepository;
+        this.matchRepository = matchRepository;
     }
 
     @Override
@@ -69,6 +70,16 @@ public class PlayerServiceBean implements PlayerService {
         playerRepository.deleteById(id);
         log.info("Deleted player: {}", playerRepository.findById(id));
 
+    }
+
+    @Override
+    public int updateRating(String playerId) {
+        var player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+        player.setRating(100/matchRepository.findAllPlayedPlayerMatches(playerId).size()*matchRepository.findWonPlayerMatches(playerId).size());
+        playerRepository.save(player);
+        log.info("Updated player rating: {}", player);
+        return player.getRating();
     }
 
 }

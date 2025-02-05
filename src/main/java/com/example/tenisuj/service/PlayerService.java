@@ -23,4 +23,6 @@ public interface PlayerService {
 
     void deletePlayer(@NonNull String id);
 
+    int updateRating(String playerId);
+
 }
