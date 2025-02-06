@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
@@ -37,12 +38,34 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/rest/players/**").permitAll()
                                 .requestMatchers("/rest/users/**").hasRole("ADMIN")
-//                                .requestMatchers("/rest/users/**").hasRole("ROLE_USER")
                                 .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
                 .httpBasic(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/home", "/players/**", "/matches/**", "/leagues/**", "/login", "/logout", "/signup").permitAll()
+                                .requestMatchers("/users/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .userDetailsService(userDetailsService)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/home")
+                        .permitAll()
+                );
         return http.build();
     }
 
@@ -56,7 +79,7 @@ public class SecurityConfig {
         return args -> {
             String username = "admin";
             if (!userRepository.existsById(username)) {
-                User user = new User(username,Role.ADMIN.getRole(), passwordEncoder().encode("admin"));
+                User user = new User(username, Role.ADMIN.getRole(), passwordEncoder().encode("admin"));
                 userRepository.save(user);
             }
         };
