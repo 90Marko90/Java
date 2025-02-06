@@ -5,6 +5,7 @@ import com.example.tenisuj.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +29,7 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
 
-    public SecurityConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, UserAuthenticationProvider userAuthenticationProvider, UserDetailsService userDetailsService, UserRepository userRepository) {
+    public SecurityConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, @Lazy UserAuthenticationProvider userAuthenticationProvider, UserDetailsService userDetailsService, UserRepository userRepository) {
         this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
         this.userAuthenticationProvider = userAuthenticationProvider;
         this.userDetailsService = userDetailsService;
@@ -44,13 +45,11 @@ public class SecurityConfig {
                                 .requestMatchers("/rest/players/**").permitAll()
                                 .requestMatchers("/rest/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
-//                               .requestMatchers("/rest/users/**").hasRole("ROLE_USER")
                                 .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
                 .httpBasic(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                //
                 .exceptionHandling(customizer -> customizer.authenticationEntryPoint(userAuthenticationEntryPoint))
                 .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider), BasicAuthenticationFilter.class)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -67,7 +66,7 @@ public class SecurityConfig {
         return args -> {
             String username = "admin";
             if (!userRepository.existsById(username)) {
-                User user = new User(username,Role.ADMIN.getRole(), passwordEncoder().encode("admin"));
+                User user = new User(username, Role.ADMIN.getRole(), passwordEncoder().encode("admin"));
                 userRepository.save(user);
             }
         };

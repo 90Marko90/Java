@@ -1,5 +1,4 @@
 package com.example.tenisuj.security;
-
 import com.example.tenisuj.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

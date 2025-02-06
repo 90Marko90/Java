@@ -112,7 +112,7 @@ public class UserServiceBean implements UserService {
     }
     //Login
     public UserDto login(CredentialsDto credentialsDto) {
-        User user = userRepository.findByLogin(credentialsDto.login())
+        User user = userRepository.findByUsername(credentialsDto.login())
                 .orElseThrow(() -> new CustomHttpException("Unknown user", HttpStatus.NOT_FOUND));
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             return userMapper.toUserDto(user);
@@ -121,18 +121,22 @@ public class UserServiceBean implements UserService {
     }
     //register
     public UserDto register(SignUpDto userDto) {
-        Optional<User> optionalUser = userRepository.findByLogin(userDto.login());
+        Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
+
         if (optionalUser.isPresent()) {
             throw new CustomHttpException("Login already exists", HttpStatus.BAD_REQUEST);
         }
+ 
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
+
         User savedUser = userRepository.save(user);
+
         return userMapper.toUserDto(savedUser);
     }
 
     public UserDto findByLogin(String login) {
-        User user = userRepository.findByLogin(login)
+        User user = userRepository.findByUsername(login)
                 .orElseThrow(() -> new CustomHttpException("Unknown user", HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
     }
