@@ -71,6 +71,4 @@ public class UserApi {
         log.error("IllegalArgumentException: {}", e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
-
 }
