@@ -51,11 +51,18 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/home", "/players/**", "/matches/**", "/leagues/**", "/login", "/logout", "/signup", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                                // Umožniť prístup na tieto adresy aj neprihláseným používateľom
+                                .requestMatchers("/login", "/signup","/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+
+                                // Adresy ktore vyžadujú prihlásenie
+                                .requestMatchers("/home", "/players/**","/matches/**", "/leagues/**").authenticated()
+
+                                // Admin sekcia
                                 .requestMatchers("/users/**").hasRole("ADMIN")
+
+                                // Pre všetky ostatné požiadavky musí byť používateľ prihlásený
                                 .anyRequest().authenticated()
                 )
-                .userDetailsService(userDetailsService)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
@@ -65,7 +72,8 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/home")
                         .permitAll()
-                );
+                )
+                .userDetailsService(userDetailsService);
         return http.build();
     }
 
