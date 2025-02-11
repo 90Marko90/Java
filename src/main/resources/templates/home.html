@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title th:text="${pageTitle} ? ${pageTitle} : 'default title'"></title>
@@ -7,6 +8,7 @@
 <!--      <link rel="stylesheet" th:href="@{/css/style.css}">-->
   <style></style>
 </head>
+
 <body>
 
 <header>
@@ -14,9 +16,19 @@
 
 </header>
 
-<div id="menu" th:insert="~{fragments/menu :: menu}"></div>
 
-<h2 th:text="${pageTitle}" class="mb-4"></h2>
+<div id="menu" th:insert="~{fragments/menu :: menu}"></div>
+<div sec:authorize="isAuthenticated()">
+<h2>
+  Welcome, <span th:text="${player != null ? player.firstName : #authentication.name}"></span>!
+</h2>
+<div th:if="${player == null}">
+  <h3>Your player profile is not filled out yet.</h3>
+  <button type="button" th:onclick="|window.location.href='@{/profile/create}'|">Player profile</button>
+</div>
+</div>
+
+<!--<h2 th:text="${pageTitle}" class="mb-4"></h2>-->
 <p th:text="${home}"></p>
 
 

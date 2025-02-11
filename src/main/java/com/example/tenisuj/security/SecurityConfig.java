@@ -52,10 +52,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 // Umožniť prístup na tieto adresy aj neprihláseným používateľom
-                                .requestMatchers("/login", "/signup","/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                                .requestMatchers("/home", "/login", "/signup","/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
 
                                 // Adresy ktore vyžadujú prihlásenie
-                                .requestMatchers("/home", "/players/**","/matches/**", "/leagues/**").authenticated()
+                                .requestMatchers("/home", "/players/**","/matches/**", "/leagues/**", "profile/**").authenticated()
 
                                 // Admin sekcia
                                 .requestMatchers("/users/**").hasRole("ADMIN")

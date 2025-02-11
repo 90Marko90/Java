@@ -17,6 +17,6 @@ public class DatabaseUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findById(username)
                 .map(UserDetailsAdapter::new)
-                .orElse(null);
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 }

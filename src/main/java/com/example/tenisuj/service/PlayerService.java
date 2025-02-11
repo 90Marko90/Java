@@ -23,6 +23,16 @@ public interface PlayerService {
 
     void deletePlayer(@NonNull String id);
 
+    Player editPlayer(@NonNull String id,
+                      @NonNull String firstName,
+                      @NonNull String lastName,
+                      String email,
+                      String gender,
+                      LocalDate birthday,
+                      Boolean leagueStatus,
+                      String hand,
+                      int rating);
+
     int updateRating(String playerId);
 
 }

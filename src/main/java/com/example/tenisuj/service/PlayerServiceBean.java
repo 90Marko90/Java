@@ -6,7 +6,9 @@ import com.example.tenisuj.repository.PlayerRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,24 +32,25 @@ public class PlayerServiceBean implements PlayerService {
 
         registrationDate = LocalDate.now();
 
-        if (gender.equalsIgnoreCase("M")) {
+        if (gender.equalsIgnoreCase("MALE")) {
             gender = "Male";
-        } else if (gender.equalsIgnoreCase("F")) {
+        } else if (gender.equalsIgnoreCase("FEMALE")) {
             gender = "Female";
         } else {
-            gender = "Unknown";
+            gender = "Other";
         }
-        if (hand.equalsIgnoreCase("L")) {
+        if (hand.equalsIgnoreCase("LEFT")) {
             hand = "Left";
-        } else if (hand.equalsIgnoreCase("R")) {
+        } else if (hand.equalsIgnoreCase("RIGHT")) {
             hand = "Right";
         } else {
             hand = "Unknown";
         }
 
         var player = new Player(UUID.randomUUID().toString(), firstName, lastName, email, gender, birthday, leagueStatus, hand, rating, registrationDate);
-        log.info("Adding player: {}", player);
-        return playerRepository.save(player);
+        playerRepository.save(player);
+        log.info("Adding player: {}", player.getId());
+        return player;
     }
 
     @Override
@@ -73,10 +76,60 @@ public class PlayerServiceBean implements PlayerService {
     }
 
     @Override
+    public Player editPlayer(@NonNull String id,
+                             @NonNull String firstName,
+                             @NonNull String lastName,
+                             String email,
+                             String gender,
+                             LocalDate birthday,
+                             Boolean leagueStatus,
+                             String hand,
+                             int rating) {
+
+        var player = playerRepository
+                .findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Player not found"));
+
+        player.setFirstName(firstName);
+        player.setLastName(lastName);
+
+        if (StringUtils.hasText(email)) {
+            player.setEmail(email);
+        } else {
+            player.setEmail(player.getEmail());
+        }
+
+        if (StringUtils.hasText(gender)) {
+            player.setGender(gender);
+        } else {
+            player.setGender(player.getGender());
+        }
+
+        if (birthday != null) {
+            player.setBirthDate(birthday);
+        } else {
+            player.setBirthDate(player.getBirthDate());
+        }
+
+        if (StringUtils.hasText(hand)) {
+            player.setHand(hand);
+        } else {
+            player.setHand(player.getHand());
+        }
+
+        player.setLeagueStatus(player.getLeagueStatus());
+        player.setRating(player.getRating());
+
+        playerRepository.save(player);
+        log.info("Player updated: {}", player.getId());
+        return player;
+    }
+
+    @Override
     public int updateRating(String playerId) {
         var player = playerRepository.findById(playerId)
                 .orElseThrow(() -> new IllegalArgumentException("Player not found"));
-        player.setRating(100/matchRepository.findAllPlayedPlayerMatches(playerId).size()*matchRepository.findWonPlayerMatches(playerId).size());
+        player.setRating(100 / matchRepository.findAllPlayedPlayerMatches(playerId).size() * matchRepository.findWonPlayerMatches(playerId).size());
         playerRepository.save(player);
         log.info("Updated player rating: {}", player);
         return player.getRating();
