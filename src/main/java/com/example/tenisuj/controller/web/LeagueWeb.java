@@ -3,14 +3,10 @@ package com.example.tenisuj.controller.web;
 import com.example.tenisuj.model.League;
 import com.example.tenisuj.service.LeagueService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 
 @Controller
 @RequestMapping("/leagues")
@@ -35,6 +31,13 @@ public class LeagueWeb {
     public String createLeague(@ModelAttribute("league") League league, Model model) {
         setDefaultValues(model);
         leagueService.addLeague(league.getId(), league.getName());
+        return "redirect:/leagues/";
+    }
+
+    @GetMapping("/add-matches/{id}")
+    public String addMatches(@PathVariable("id") String leagueId, Model model) {
+        setDefaultValues(model);
+        leagueService.leagueMatchGenerator(leagueId);
         return "redirect:/leagues/";
     }
 
