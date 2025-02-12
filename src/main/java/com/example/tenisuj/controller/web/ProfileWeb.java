@@ -11,12 +11,12 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/profile")
-public class ProfileController {
+public class ProfileWeb {
 
     private final PlayerService playerService;
     private final UserService userService;
 
-    public ProfileController(PlayerService playerService, UserService userService) {
+    public ProfileWeb(PlayerService playerService, UserService userService) {
         this.playerService = playerService;
         this.userService = userService;
     }

@@ -60,8 +60,8 @@ public class TenisujApplication implements CommandLineRunner {
                 new Player("00000000-0000-0000-0000-000000000004", "Oktan", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now())
         ));
 
-        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now());
-        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now());
+        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email@email.com", "gender", LocalDate.of(2000,1,31), true, "L", 0, LocalDate.now());
+        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email@email.com", "gender", LocalDate.of(2010,1,31), true, "L", 0, LocalDate.now());
 
         Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,"Stara cesta 5, Bratislava, kurt 10", LocalDateTime.of(2025,1,31,10,30),7,5,6,4,null,null,null,null,null,null,null,players.get(0));
         Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),null,null,7,5,0,6,3,0,null,null,null,null,players.get(1),players.get(2));

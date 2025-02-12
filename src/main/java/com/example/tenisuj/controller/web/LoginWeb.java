@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class LoginController {
+public class LoginWeb {
 
     private final UserService userService;
 
     @Autowired
-    public LoginController (UserService userService) {
+    public LoginWeb(UserService userService) {
         this.userService = userService;
     }
 

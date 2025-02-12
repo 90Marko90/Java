@@ -1,6 +1,7 @@
 package com.example.tenisuj.controller.web;
 
 import com.example.tenisuj.model.Player;
+import com.example.tenisuj.model.dto.PlayerDTO;
 import com.example.tenisuj.service.PlayerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -26,7 +30,11 @@ public class PlayerWeb {
     @GetMapping("/")
     String getAllPlayers(Model model) {
         setDefaultValues(model);
-        model.addAttribute("players", playerService.getAllPlayers());
+        List<Player> players = playerService.getAllPlayers();
+        List<PlayerDTO> playerDTOs = players.stream()
+                .map(PlayerDTO::new)
+                .collect(Collectors.toList());
+        model.addAttribute("players", playerDTOs);
         model.addAttribute("player", new Player());
         return "players";
     }
