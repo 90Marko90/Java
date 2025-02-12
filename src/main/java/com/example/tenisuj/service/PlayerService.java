@@ -17,7 +17,7 @@ public interface PlayerService {
                      int rating,
                      LocalDate registrationDate);
 
-    List<Player> getAllPlayers();
+    List<Player> getAllPlayers(String keyword);
 
     Player getPlayerById(@NonNull String id);
 
