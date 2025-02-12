@@ -5,6 +5,7 @@ import com.example.tenisuj.model.dto.PlayerDTO;
 import com.example.tenisuj.service.PlayerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,14 +29,15 @@ public class PlayerWeb {
     }
 
     @GetMapping("/")
-    String getAllPlayers(Model model) {
+    String getAllPlayers(Model model, @Param("keyword") String keyword) {
         setDefaultValues(model);
-        List<Player> players = playerService.getAllPlayers();
+        List<Player> players = playerService.getAllPlayers(keyword);
         List<PlayerDTO> playerDTOs = players.stream()
                 .map(PlayerDTO::new)
                 .collect(Collectors.toList());
         model.addAttribute("players", playerDTOs);
         model.addAttribute("player", new Player());
+        model.addAttribute("keyword", keyword);
         return "players";
     }
 

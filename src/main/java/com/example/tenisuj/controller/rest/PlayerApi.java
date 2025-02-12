@@ -24,9 +24,9 @@ public class PlayerApi {
     }
 
     @GetMapping("/")
-    List<Player> getPlayers() {
+    List<Player> getPlayers(String keyword) {
         log.info("Get all players");
-        return playerService.getAllPlayers();
+        return playerService.getAllPlayers(keyword);
     }
 
     @GetMapping("/{id}")

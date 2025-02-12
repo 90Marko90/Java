@@ -14,8 +14,17 @@
 </header>
 
 <div id="menu" th:insert="~{fragments/menu :: menu}"></div>
-<div id="page" class="container mt-4" sec:authorize="hasRole('ROLE_ADMIN')">
+<div id="page" class="container mt-4">
     <h2 th:text="${pageTitle}" class="mb-5"></h2>
+    <h3>Search player</h3>
+    <form th:action="@{/players/}" method="get" class="mb-4">
+        <div class="input-group mb-3">
+            <input type="text" name="keyword" class="form-control" placeholder="Search player" th:value="${keyword}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+</div>
+<div id="page" class="container mt-4" sec:authorize="hasRole('ROLE_ADMIN')">
     <h3>Add new player</h3>
     <form action="#" th:action="@{/players/create}" th:object="${player}" method="post" class="mb-4">
         <div class="mb-3">

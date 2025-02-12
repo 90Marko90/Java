@@ -54,7 +54,10 @@ public class PlayerServiceBean implements PlayerService {
     }
 
     @Override
-    public List<Player> getAllPlayers() {
+    public List<Player> getAllPlayers(String keyword) {
+        if (keyword != null) {
+            return playerRepository.search(keyword);
+        }
         return playerRepository.findAll().stream().toList();
     }
 
