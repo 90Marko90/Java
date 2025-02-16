@@ -12,6 +12,9 @@ import java.util.List;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, String> {
 
-    @Query(value = "SELECT * FROM players WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE LOWER(CONCAT('%', :keyword, '%'))", nativeQuery = true)
+    //    @Query(value = "SELECT * FROM players WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE LOWER(CONCAT('%', :keyword, '%'))", nativeQuery = true)
+    @Query("select p from players p where lower(concat(p.firstName,'',p.lastName)) like lower(concat('%', :keyword, '%'))")
     List<Player> search(@Param("keyword") String keyword);
+
+    List<Player> findByLeagueIdOrderByRatingDesc(String leagueId);
 }
