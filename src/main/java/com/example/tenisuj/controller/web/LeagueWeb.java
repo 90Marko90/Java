@@ -1,7 +1,6 @@
 package com.example.tenisuj.controller.web;
 
 import com.example.tenisuj.model.League;
-import com.example.tenisuj.model.Player;
 import com.example.tenisuj.model.dto.UpdateLeagueDto;
 import com.example.tenisuj.service.LeagueService;
 import com.example.tenisuj.service.PlayerService;
@@ -54,7 +53,6 @@ public class LeagueWeb {
         model.addAttribute("league", leagueService.getLeague(leagueId));
         model.addAttribute("players", playerService.getAllPlayers(null));
         model.addAttribute("updateLeagueDto", updateLeagueDto);
-        model.addAttribute("sortPlayer", new Player());
         model.addAttribute("sortedPlayers", leagueService.getPlayersSortedByRating(leagueId));
         return "leagueDetails";
     }

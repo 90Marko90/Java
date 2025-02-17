@@ -67,10 +67,10 @@
         </thead>
 
         <tbody>
-        <tr th:each="sortPlayer, iterStat : ${sortedPlayers}">
+        <tr th:each="player, iterStat : ${sortedPlayers}">
             <td th:text="${iterStat.count}"></td>
-            <td th:text="${sortPlayer.firstName} + ' ' + ${sortPlayer.lastName}"></td>
-            <td th:text="${sortPlayer.rating}"></td>
+            <td th:text="${player.firstName} + ' ' + ${player.lastName}"></td>
+            <td th:text="${player.rating}"></td>
         </tr>
         </tbody>
     </table>
