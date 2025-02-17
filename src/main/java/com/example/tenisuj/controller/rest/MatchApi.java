@@ -24,9 +24,9 @@ public class MatchApi {
     }
 
     @GetMapping("/")
-    List<Match> getMatches() {
+    List<Match> getMatches(String keyword) {
         log.info("getMatches");
-        return matchService.getMatches();
+        return matchService.getMatches(keyword);
     }
     @GetMapping("/player_matches/{playerId}")
     List<Match> getPlayerMatches(@PathVariable("playerId") String playerId) {
