@@ -1,5 +1,4 @@
 package com.example.tenisuj.model;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
@@ -8,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 
 @Entity(name = "players")
@@ -31,7 +29,7 @@ public class Player {
 
     private String gender;
 
-    @DateTimeFormat
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
 
     private Boolean leagueStatus;
@@ -39,7 +37,7 @@ public class Player {
     private String hand;
 
     private int rating;
-
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate registrationDate;
 
 }

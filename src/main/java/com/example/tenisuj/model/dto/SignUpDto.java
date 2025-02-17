@@ -1,3 +1,4 @@
 package com.example.tenisuj.model.dto;
-//created
-public record SignUpDto (String username, String password, String role) { }
+import com.example.tenisuj.model.enums.Role;
+
+public record SignUpDto (String username, char[] password, Role role) { }

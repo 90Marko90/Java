@@ -1,15 +1,12 @@
 package com.example.tenisuj.model;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 @Entity
 @Table(name = "matches")
@@ -30,7 +27,7 @@ public class Match {
 
     private String location;
 
-    @DateTimeFormat
+    @DateTimeFormat(pattern="dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateTime;
 
     private Integer player1_set1;
@@ -49,7 +46,5 @@ public class Match {
 
     @ManyToOne
     private Player winner;
-
-//    private boolean confirmedResult;
 
 }

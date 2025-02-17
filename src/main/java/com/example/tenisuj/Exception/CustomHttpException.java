@@ -6,13 +6,11 @@ public class CustomHttpException extends ResponseStatusException {
 
     private final HttpStatus status;
 
-    public HttpStatus getStatus() {
-        return status;
-    }
-
     public CustomHttpException(String message, HttpStatus status) {
         super(status, message);
         this.status = status;
-
+    }
+    public HttpStatus getStatus() {
+        return status;
     }
 }

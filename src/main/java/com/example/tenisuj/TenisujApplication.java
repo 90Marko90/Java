@@ -4,10 +4,12 @@ import com.example.tenisuj.model.League;
 import com.example.tenisuj.model.Match;
 import com.example.tenisuj.model.Player;
 import com.example.tenisuj.model.User;
+import com.example.tenisuj.model.enums.Role;
 import com.example.tenisuj.repository.LeagueRepository;
 import com.example.tenisuj.repository.MatchRepository;
 import com.example.tenisuj.repository.PlayerRepository;
 import com.example.tenisuj.repository.UserRepository;
+import com.example.tenisuj.service.PlayerServiceBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -30,14 +33,17 @@ public class TenisujApplication implements CommandLineRunner {
     private final MatchRepository matchRepository;
     private final LeagueRepository leagueRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PlayerServiceBean playerServiceBean;
+
 
     @Autowired
-    public TenisujApplication(UserRepository userRepository, PlayerRepository playerRepository, MatchRepository matchRepository, LeagueRepository leagueRepository, PasswordEncoder passwordEncoder) {
+    public TenisujApplication(UserRepository userRepository, PlayerRepository playerRepository, MatchRepository matchRepository, LeagueRepository leagueRepository, PasswordEncoder passwordEncoder, PlayerServiceBean playerServiceBean) {
         this.userRepository = userRepository;
         this.playerRepository = playerRepository;
         this.matchRepository = matchRepository;
         this.leagueRepository = leagueRepository;
         this.passwordEncoder = passwordEncoder;
+        this.playerServiceBean = playerServiceBean;
     }
 
 
@@ -48,44 +54,52 @@ public class TenisujApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        Optional<Player> playerOptional = playerRepository.findByFirstName("Dominika");
+        Player player = playerOptional.orElse(null);
+
+        if (player != null) {
+            System.out.println("Found player: " + player.getFirstName());
+        } else {
+            System.out.println("Player not found");
+        }
+
+
+
+
+
+
         List<User> users = new ArrayList<>(List.of(
-                new User("Marko", "ROLE_USER", passwordEncoder.encode("password"))
+                new User("user", passwordEncoder.encode("user"), Role.USER)
         ));
 
         List<Player> players = new ArrayList<>(List.of(
-                new Player("00000000-0000-0000-0000-000000000000", "Marek", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 100, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000001", "Peter", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000002", "Viktor", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 100, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000003", "David", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000004", "Oktan", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now())
+                new Player(UUID.randomUUID().toString(), "Marek", "priezvisko", "email@email.com", "Male", LocalDate.now(), true, "right", 100, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Michal", "priezvisko", "email@email.com", "Male", LocalDate.now(), true, "right", 50, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Viktor", "priezvisko", "email@email.com", "Male", LocalDate.now(), true, "right", 100, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Janka", "priezvisko", "email@email.com", "Female", LocalDate.now(), true, "left", 0, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Dominika", "priezvisko", "email@email.com", "Female", LocalDate.now(), true, "left", 0, LocalDate.now())
         ));
 
-        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now());
-        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now());
+        List<Match> matches = new ArrayList<>(List.of(
+                new Match(UUID.randomUUID().toString(), players.get(0), players.get(1), "Stara cesta 5, Bratislava", LocalDateTime.of(2025, 1, 15, 10, 30), 7, 5, 6, 4, 4, 3, 2, 4, 5, 6, players.get(1), players.get(0)),
+                new Match(UUID.randomUUID().toString(), players.get(1), players.get(2), "Popradská 84, Košice", LocalDateTime.of(2025, 1, 25, 9, 30), 7, 6, 0, 6, 3, 0, 6, 2, 3, 6, players.get(1), players.get(2)),
+                new Match(UUID.randomUUID().toString(), players.get(3), players.get(4), "Kollárova 85A, Martin", LocalDateTime.of(2025, 2, 10, 11, 30), 4, 3, 6, 5, 1, 6, 5, 5, 4, 6, players.get(3), players.get(4)),
+                new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Za Císařským mlýnem 2, Praha", LocalDateTime.of(2025, 2, 15, 13, 30), 5, 6, 4, 3, 5, 2, 3, 6, 6, 2, players.get(1), players.get(3))
+                //new Match(UUID.randomUUID().toString(), playerName, players.get(1), "Glinkova 23, Praha", LocalDateTime.of(2025, 2, 15, 13, 30), 5, 6, 4, 3, 5, 2, 3, 6, 6, 2, players.get(1), players.get(3))
+        ));
 
-        Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,"Stara cesta 5, Bratislava, kurt 10", LocalDateTime.of(2025,1,31,10,30),7,5,6,4,null,null,null,null,null,null,null,players.get(0));
-        Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),null,null,7,5,0,6,3,0,null,null,null,null,players.get(1),players.get(2));
 
-        League league = new League("00000000-0000-0000-0000-000000000100","League",players,null);
+        List<League> leagues = new ArrayList<>();
+        leagues.add(new League(UUID.randomUUID().toString(), "Slovak Tennis League", new ArrayList<>(players), new ArrayList<>(matches)));
+        //leagues.add(new League(UUID.randomUUID().toString(), "Czech Tennis League", new ArrayList<>(players), new ArrayList<>(matches)));
 
-        users.getFirst().setPlayer(players.get(1));
-        league.setPlayers(players);
-
+        userRepository.saveAll(users);
         playerRepository.saveAll(players);
-        playerRepository.save(player1);
-        playerRepository.save(player2);
-
-        for (User user : users) {
-            userRepository.save(user);
-        }
-
-        matchRepository.save(match1);
-        matchRepository.save(match2);
-
-        leagueRepository.save(league);
+        matchRepository.saveAll(matches);
+        leagueRepository.saveAll(leagues);
 
 
     }
-
 
 }

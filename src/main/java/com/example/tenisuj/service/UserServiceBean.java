@@ -1,6 +1,7 @@
 package com.example.tenisuj.service;
 import com.example.tenisuj.Exception.CustomHttpException;
 import com.example.tenisuj.Mapper.UserMapper;
+import com.example.tenisuj.model.Player;
 import com.example.tenisuj.model.User;
 import com.example.tenisuj.model.dto.CredentialsDto;
 import com.example.tenisuj.model.dto.SignUpDto;
@@ -18,6 +19,7 @@ import org.springframework.util.StringUtils;
 import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -34,7 +36,6 @@ public class UserServiceBean implements UserService {
         this.playerRepository = playerRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
-
     }
 
     @Override
@@ -45,7 +46,11 @@ public class UserServiceBean implements UserService {
         if (!StringUtils.hasText(password)) {
             throw new IllegalArgumentException("Password is empty");
         }
-        var User = new User(username, Role.USER.getRole(), passwordEncoder.encode(password));
+        Role role = Role.USER;
+        String roleString = role.getRole(); // Assuming this returns a String
+        Role userRole = Role.valueOf(roleString);
+
+        var User = new User(username, passwordEncoder.encode(password), userRole);
 
         if (userRepository.existsById(username)) {
             throw new IllegalArgumentException("User already exists");
@@ -91,12 +96,6 @@ public class UserServiceBean implements UserService {
             updated.setPassword(user.getPassword());
         }
 
-        if (StringUtils.hasText(playerId)) {
-            updated.setPlayer(playerRepository.findById(playerId)
-                    .orElseThrow(() -> new UsernameNotFoundException("Player not found")));
-        } else {
-            updated.setPlayer(user.getPlayer());
-        }
         updated.setRole(user.getRole());
         userRepository.save(updated);
         log.info("User updated: {}", updated.getUsername());
@@ -110,33 +109,32 @@ public class UserServiceBean implements UserService {
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
-    //Login
+
     public UserDto login(CredentialsDto credentialsDto) {
-        User user = userRepository.findByUsername(credentialsDto.login())
+        User user = userRepository.findByUsername(credentialsDto.username())
                 .orElseThrow(() -> new CustomHttpException("Unknown user", HttpStatus.NOT_FOUND));
+        //compare the given password with the password in DB
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
+            //if correct, then maps the user from DB to UserDto
             return userMapper.toUserDto(user);
         }
         throw new CustomHttpException("Invalid password", HttpStatus.BAD_REQUEST);
     }
-    //register
+
     public UserDto register(SignUpDto userDto) {
         Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
-
         if (optionalUser.isPresent()) {
             throw new CustomHttpException("Login already exists", HttpStatus.BAD_REQUEST);
         }
- 
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
-
+        user.setRole(Role.USER);
         User savedUser = userRepository.save(user);
-
         return userMapper.toUserDto(savedUser);
     }
 
-    public UserDto findByLogin(String login) {
-        User user = userRepository.findByUsername(login)
+    public UserDto findByUsername(String username) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomHttpException("Unknown user", HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
     }

@@ -1,3 +1,4 @@
 package com.example.tenisuj.model.dto;
-//created
-public record CredentialsDto (String login, String password) { }
+
+public record CredentialsDto (String username, char[] password) { //only for reception
+}

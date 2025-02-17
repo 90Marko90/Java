@@ -1,14 +1,12 @@
 package com.example.tenisuj.service;
-
 import com.example.tenisuj.model.Player;
 import lombok.NonNull;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public interface PlayerService {
-    Player addPlayer(@NonNull String firstName,
-                     @NonNull String lastName,
+    Player addPlayer(String firstName,
+                     String lastName,
                      String email,
                      String gender,
                      LocalDate birthday,

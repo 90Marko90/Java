@@ -4,6 +4,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.tenisuj.model.dto.UserDto;
+import com.example.tenisuj.model.enums.Role;
 import com.example.tenisuj.service.UserServiceBean;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +35,14 @@ public class UserAuthenticationProvider {
     public String createToken(UserDto user) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000); // 1 hour
-
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
         return JWT.create()
                 .withSubject(user.getUsername())
+                //.withClaim(user.firstName)
+                //.withClaim(user.lastName)
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
-                .withClaim("role", user.getRole())
                 .sign(algorithm);
     }
 
@@ -54,7 +56,6 @@ public class UserAuthenticationProvider {
 
         UserDto user = UserDto.builder()
                 .username(decoded.getSubject())
-                .role(decoded.getClaim("role").asString())
                 .build();
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
@@ -68,7 +69,7 @@ public class UserAuthenticationProvider {
 
         DecodedJWT decoded = verifier.verify(token);
 
-        UserDto user = userServiceBean.findByLogin(decoded.getSubject());
+        UserDto user = userServiceBean.findByUsername(decoded.getSubject());
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

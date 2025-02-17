@@ -34,7 +34,7 @@ public class LeagueServiceBean implements LeagueService {
         if (leagueRepository.existsByName(leagueName)) {
             throw new IllegalArgumentException("League already exists!");
         }
-        League league = new League(UUID.randomUUID().toString(), leagueName, null, null);
+        League league = new League(UUID.randomUUID().toString(), leagueName, new ArrayList<>(), new ArrayList<>());
         log.info("Adding league {}", leagueName);
         leagueRepository.save(league);
 

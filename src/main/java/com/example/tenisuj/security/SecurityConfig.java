@@ -6,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -42,9 +40,8 @@ public class SecurityConfig {
                 .securityMatcher("/rest/**")
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/rest/players/**").permitAll()
-                                .requestMatchers("/rest/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/home", "/login", "/register").permitAll()
+                                .requestMatchers("/users/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -65,8 +62,10 @@ public class SecurityConfig {
     public CommandLineRunner initDatabase() {
         return args -> {
             String username = "admin";
+            String password = "admin";
+            Role role = Role.ADMIN;
             if (!userRepository.existsById(username)) {
-                User user = new User(username, Role.ADMIN.getRole(), passwordEncoder().encode("admin"));
+                User user = new User(username, passwordEncoder().encode(password), role);
                 userRepository.save(user);
             }
         };

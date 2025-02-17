@@ -1,4 +1,5 @@
 package com.example.tenisuj.model;
+import com.example.tenisuj.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +21,17 @@ public class User {
     private String password;
 
     @Column(name="role")
-    private String role;
+    private Role role;
 
     @OneToOne
     @JoinColumn(name = "player_id")
     private Player player;
 
 
-    public User(String username, String role, String password) {
+    public User(String username, String password, Role role) {
         this.username = username;
-        this.role = role;
         this.password = password;
+        this.role = role;
     }
+
 }

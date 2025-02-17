@@ -1,4 +1,5 @@
 package com.example.tenisuj.model.dto;
+import com.example.tenisuj.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,10 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserDto { //for reception and transmission
     private String username;
     private String password;
-    private String role;
+    private Role role;
     private String token;
-
 }
