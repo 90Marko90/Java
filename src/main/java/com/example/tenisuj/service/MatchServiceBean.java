@@ -63,7 +63,10 @@ public class MatchServiceBean implements MatchService {
     }
 
     @Override
-    public List<Match> getMatches() {
+    public List<Match> getMatches(String playerName) {
+        if (playerName != null) {
+            return matchRepository.search(playerName);
+        }
         return matchRepository.findAll().stream().toList();
     }
 

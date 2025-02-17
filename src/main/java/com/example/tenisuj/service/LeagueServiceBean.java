@@ -69,6 +69,7 @@ public class LeagueServiceBean implements LeagueService {
                 .orElseThrow(() -> new IllegalArgumentException("Player not found"));
         league.getPlayers().add(player);
         player.setLeagueStatus(true);
+        player.setLeagueId(leagueId);
         log.info("Adding player to league {}", league);
         playerRepository.save(player);
         leagueRepository.save(league);
@@ -107,5 +108,10 @@ public class LeagueServiceBean implements LeagueService {
 
         log.info("League match generator {}", matchList);
         return matchList;
+    }
+
+    @Override
+    public List<Player> getPlayersSortedByRating(String leagueId) {
+        return playerRepository.findByLeagueIdOrderByRatingDesc(leagueId);
     }
 }

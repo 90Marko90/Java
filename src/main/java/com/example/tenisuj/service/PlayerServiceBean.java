@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,25 +30,24 @@ public class PlayerServiceBean implements PlayerService {
 
         registrationDate = LocalDate.now();
 
-        if (gender.equalsIgnoreCase("MALE")) {
+        if (gender.equalsIgnoreCase("M")) {
             gender = "Male";
-        } else if (gender.equalsIgnoreCase("FEMALE")) {
+        } else if (gender.equalsIgnoreCase("F")) {
             gender = "Female";
         } else {
-            gender = "Other";
+            gender = "Unknown";
         }
-        if (hand.equalsIgnoreCase("LEFT")) {
+        if (hand.equalsIgnoreCase("L")) {
             hand = "Left";
-        } else if (hand.equalsIgnoreCase("RIGHT")) {
+        } else if (hand.equalsIgnoreCase("R")) {
             hand = "Right";
         } else {
             hand = "Unknown";
         }
 
         var player = new Player(UUID.randomUUID().toString(), firstName, lastName, email, gender, birthday, leagueStatus, hand, rating, registrationDate);
-        playerRepository.save(player);
-        log.info("Adding player: {}", player.getId());
-        return player;
+        log.info("Adding player: {}", player);
+        return playerRepository.save(player);
     }
 
     @Override
@@ -82,12 +80,6 @@ public class PlayerServiceBean implements PlayerService {
         playerRepository.save(player);
         log.info("Updated player rating: {}", player);
         return player.getRating();
-    }
-
-    public Player getPlayerByName(String firstName) {
-        Optional<Player> playerOptional = playerRepository.findByFirstName(firstName);
-        return playerOptional.
-                orElse(null); // You can handle null as needed
     }
 
 }

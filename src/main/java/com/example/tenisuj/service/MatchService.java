@@ -8,7 +8,7 @@ public interface MatchService {
     Match getMatch(String matchId);
     List<Match> findAllPlayerMatches(String playerId);
     List<Match> findWonPlayerMatches(String playerId);
-    List<Match> getMatches();
+    List<Match> getMatches(String playerName);
     void deleteMatch(String matchId);
     Match addLocation(String matchId, String Location, LocalDateTime dateTime);
     Match addResult(

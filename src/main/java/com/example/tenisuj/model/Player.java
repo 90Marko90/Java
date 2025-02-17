@@ -34,6 +34,8 @@ public class Player {
 
     private Boolean leagueStatus;
 
+    private String leagueId;
+
     private String hand;
 
     private int rating;

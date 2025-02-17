@@ -2,6 +2,7 @@ package com.example.tenisuj.service;
 
 import com.example.tenisuj.model.League;
 import com.example.tenisuj.model.Match;
+import com.example.tenisuj.model.Player;
 
 import java.util.List;
 
@@ -18,5 +19,6 @@ public interface LeagueService {
 
     List<Match> leagueMatchGenerator(String leagueId);
 
+    List<Player> getPlayersSortedByRating(String leagueId);
 
 }
