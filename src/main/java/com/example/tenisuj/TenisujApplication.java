@@ -4,6 +4,7 @@ import com.example.tenisuj.model.League;
 import com.example.tenisuj.model.Match;
 import com.example.tenisuj.model.Player;
 import com.example.tenisuj.model.User;
+import com.example.tenisuj.model.enums.Role;
 import com.example.tenisuj.repository.LeagueRepository;
 import com.example.tenisuj.repository.MatchRepository;
 import com.example.tenisuj.repository.PlayerRepository;
@@ -40,7 +41,6 @@ public class TenisujApplication implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public static void main(String[] args) {
         SpringApplication.run(TenisujApplication.class, args);
     }
@@ -49,43 +49,33 @@ public class TenisujApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         List<User> users = new ArrayList<>(List.of(
-                new User("Marek", "ROLE_USER", passwordEncoder.encode("123"))
+                new User("user", passwordEncoder.encode("user"), Role.USER)
         ));
 
         List<Player> players = new ArrayList<>(List.of(
-                new Player("00000000-0000-0000-0000-000000000000", "Marek", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 100, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000001", "Peter", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000002", "Viktor", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 100, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000003", "David", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now()),
-                new Player("00000000-0000-0000-0000-000000000004", "Oktan", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now())
+                new Player(UUID.randomUUID().toString(), "Marek", "priezvisko", "email@email.com", "Male", LocalDate.now(), true, "Right", 100, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Michal", "priezvisko", "email@email.com", "Male", LocalDate.now(), true, "Right", 50, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Viktor", "priezvisko", "email@email.com", "Male", LocalDate.now(), true, "Right", 100, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Janka", "priezvisko", "email@email.com", "Female", LocalDate.now(), true, "Left", 75, LocalDate.now()),
+                new Player(UUID.randomUUID().toString(), "Dominika", "priezvisko", "email@email.com", "Female", LocalDate.now(), true, "Left", 75, LocalDate.now())
         ));
 
-        Player player1 = new Player("00000000-0000-0000-0000-000000000005", "Adam", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now());
-        Player player2 = new Player("00000000-0000-0000-0000-000000000006", "Martin", "priezvisko", "email@email.com", "gender", LocalDate.now(), true, "L", 0, LocalDate.now());
+        List<Match> matches = new ArrayList<>(List.of(
+                new Match(UUID.randomUUID().toString(), players.get(0), players.get(1), "Stara cesta 5, Bratislava,", LocalDateTime.of(2025, 1, 15, 10, 30), 7, 5, 6, 4, 5, 6, 3, 6, 4, 3, null, players.get(0)),
+                new Match(UUID.randomUUID().toString(), players.get(1), players.get(2), "Popradska 84, Košice", LocalDateTime.of(2025, 1, 31, 11, 30), 5, 5, 4, 6, 3, 0, 5, 2, 4, 7, null, players.get(1)),
+                new Match(UUID.randomUUID().toString(), players.get(3), players.get(4), "Kollarova 85A, Martin", LocalDateTime.of(2025, 2, 12, 9, 30), 7, 4, 4, 6, 3, 2, 7, 5, 4, 6, null, players.get(2)),
+                new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Za Cisarskym mlynem 2, Praha", LocalDateTime.of(2025, 2, 15, 13, 00), 7, 3, 1, 4, 3, 2, 3, 6, 4, 5,null, players.get(4))
+                ));
 
-        Match match1 = new Match("00000000-0000-0000-0000-000000000010",players.get(0),player1,"Stara cesta 5, Bratislava, kurt 10", LocalDateTime.of(2025,1,31,10,30),7,5,6,4,null,null,null,null,null,null,null,players.get(0));
-        Match match2 = new Match("00000000-0000-0000-0000-000000000011",players.get(1),players.get(2),null,null,7,5,0,6,3,0,null,null,null,null,players.get(1),players.get(2));
+List<League> leagues = new ArrayList<>(List.of(
+        new League(UUID.randomUUID().toString(), "Slovak Tennis League", new ArrayList<>(players), new ArrayList<>(matches))
+));
 
-        League league = new League("00000000-0000-0000-0000-000000000100","League",players,null);
 
-        users.getFirst().setPlayer(players.get(1));
-        league.setPlayers(players);
-
+        userRepository.saveAll(users);
         playerRepository.saveAll(players);
-        playerRepository.save(player1);
-        playerRepository.save(player2);
-
-        for (User user : users) {
-            userRepository.save(user);
-        }
-
-        matchRepository.save(match1);
-        matchRepository.save(match2);
-
-        leagueRepository.save(league);
-
+        matchRepository.saveAll(matches);
+        leagueRepository.saveAll(leagues);
 
     }
-
-
 }

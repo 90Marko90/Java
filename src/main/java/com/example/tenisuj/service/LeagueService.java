@@ -19,6 +19,5 @@ public interface LeagueService {
 
     List<Match> leagueMatchGenerator(String leagueId);
 
-    List<Player> getPlayersSortedByRating(String leagueId);
 
 }

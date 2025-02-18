@@ -1,7 +1,6 @@
 package com.example.tenisuj.service;
 import com.example.tenisuj.Exception.CustomHttpException;
 import com.example.tenisuj.Mapper.UserMapper;
-import com.example.tenisuj.model.Player;
 import com.example.tenisuj.model.User;
 import com.example.tenisuj.model.dto.CredentialsDto;
 import com.example.tenisuj.model.dto.SignUpDto;
@@ -19,7 +18,6 @@ import org.springframework.util.StringUtils;
 import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Slf4j

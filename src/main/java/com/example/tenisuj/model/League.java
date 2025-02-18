@@ -1,7 +1,7 @@
 package com.example.tenisuj.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +15,8 @@ public class League {
     @Id
     private String id;
     private String name;
-    @OneToMany
+    @ManyToMany
     private List<Player> players;
-    @OneToMany
+    @ManyToMany
     private List<Match> matches;
 }

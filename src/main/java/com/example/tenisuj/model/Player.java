@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity(name = "players")
 @Data
@@ -33,8 +34,6 @@ public class Player {
     private LocalDate birthDate;
 
     private Boolean leagueStatus;
-
-    private String leagueId;
 
     private String hand;
 

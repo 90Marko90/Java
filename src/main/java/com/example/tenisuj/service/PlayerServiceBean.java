@@ -7,7 +7,6 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -34,15 +33,11 @@ public class PlayerServiceBean implements PlayerService {
             gender = "Male";
         } else if (gender.equalsIgnoreCase("F")) {
             gender = "Female";
-        } else {
-            gender = "Unknown";
         }
         if (hand.equalsIgnoreCase("L")) {
             hand = "Left";
         } else if (hand.equalsIgnoreCase("R")) {
             hand = "Right";
-        } else {
-            hand = "Unknown";
         }
 
         var player = new Player(UUID.randomUUID().toString(), firstName, lastName, email, gender, birthday, leagueStatus, hand, rating, registrationDate);
@@ -51,6 +46,11 @@ public class PlayerServiceBean implements PlayerService {
     }
 
     @Override
+    public List<Player> getAllPlayers(String keyword) {
+        return List.of();
+    }
+
+
     public List<Player> getAllPlayers() {
         return playerRepository.findAll().stream().toList();
     }
@@ -70,6 +70,11 @@ public class PlayerServiceBean implements PlayerService {
         playerRepository.deleteById(id);
         log.info("Deleted player: {}", playerRepository.findById(id));
 
+    }
+
+    @Override
+    public Player editPlayer(@NonNull String id, @NonNull String firstName, @NonNull String lastName, String email, String gender, LocalDate birthday, Boolean leagueStatus, String hand, int rating) {
+        return null;
     }
 
     @Override
