@@ -1,7 +1,6 @@
 package com.example.tenisuj.controller.rest.AuthController;
 import com.example.tenisuj.model.Player;
 import com.example.tenisuj.repository.PlayerRepository;
-import com.example.tenisuj.service.PlayerService;
 import com.example.tenisuj.service.PlayerServiceBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
