@@ -65,12 +65,12 @@ public class TenisujApplication implements CommandLineRunner {
                 new Match(UUID.randomUUID().toString(), players.get(0), players.get(1), "Stara cesta 5, Bratislava,", LocalDateTime.of(2025, 1, 15, 10, 30), 7, 5, 6, 4, 5, 6, 3, 6, 4, 3, null, players.get(0)),
                 new Match(UUID.randomUUID().toString(), players.get(1), players.get(2), "Popradska 84, Košice", LocalDateTime.of(2025, 1, 31, 11, 30), 5, 5, 4, 6, 3, 0, 5, 2, 4, 7, null, players.get(1)),
                 new Match(UUID.randomUUID().toString(), players.get(3), players.get(4), "Kollarova 85A, Martin", LocalDateTime.of(2025, 2, 12, 9, 30), 7, 4, 4, 6, 3, 2, 7, 5, 4, 6, null, players.get(2)),
-                new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Čachovský rad 61, Vrútky", LocalDateTime.of(2025, 2, 15, 13, 00), 7, 3, 1, 4, 3, 2, 3, 6, 4, 5, null, players.get(4))
+                new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Čachovský rad 61, Vrútky", LocalDateTime.of(2025, 2, 15, 13, 00), 5, 3, 1, 4, 1, 2, 3, 6, 4, 5, null, players.get(4))
         ));
 
         List<Match> matchesCZ = new LinkedList<>(List.of(
                 new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Magistrů 24, Praha", LocalDateTime.of(2025, 1, 23, 14, 00), 7, 3, 1, 4, 3, 2, 3, 6, 4, 5, null, players.get(4)),
-                new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Za Cisarskym mlynem 2, Praha", LocalDateTime.of(2025, 2, 12, 15, 00), 7, 3, 1, 4, 3, 2, 3, 6, 4, 5, null, players.get(4))
+                new Match(UUID.randomUUID().toString(), players.get(3), players.get(1), "Za Cisarskym mlynem 2, Praha", LocalDateTime.of(2025, 2, 12, 15, 00), 6, 2, 2, 5, 4, 3, 2, 5, 5, 6, null, players.get(4))
         ));
 
         List<League> leagues = new ArrayList<>(List.of(
