@@ -22,7 +22,7 @@ public class PlayerController {
         this.playerRepository = playerRepository;
         this.playerServiceBean = playerServiceBean;
     }
-
+//https://github.com/sfitera/OnlineShopFrontEnd
     @GetMapping("/getAllPlayers")
     public List<Player> getAllPlayers() {
         return playerRepository.findAll();
